@@ -5,7 +5,10 @@ if (isset($_POST['loginbutton'])) {
     $Username = $_POST['uname'];
     $Pass = $_POST['pass'];
     extract($_POST);
-    include 'db_connect.php';
+    $conn = mysqli_connect('localhost', 'mani1', 'mani2002', 'crms');
+    if (!$conn) {
+        echo 'Connection error: ' . mysqli_connect_error();
+    }
     $sql = mysqli_query($conn, "SELECT * FROM  `admin` where Username='$Username' and Pass='$Pass'");
     $row  = mysqli_fetch_array($sql);
     if (is_array($row)) {
