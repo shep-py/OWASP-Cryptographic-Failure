@@ -43,7 +43,7 @@ if (isset($_POST['loginbutton'])) {
 
 <body>
     <div class="loginbox">
-        <img src="images/avatar.jpg" class="avatar">
+        <img src="cyscom.png" class="avatar">
         <h1> CRMS</h1>
         <form action="login.php" method="post">
             <h1>Admin Login</h1>
