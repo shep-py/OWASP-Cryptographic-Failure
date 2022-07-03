@@ -5,7 +5,7 @@ if (isset($_POST['loginbutton'])) {
     $Username = $_POST['uname'];
     $Pass = $_POST['pass'];
     extract($_POST);
-    $conn = mysqli_connect('localhost', 'mani1', 'mani2002', 'crms');
+    $conn = mysqli_connect('localhost', 'mani1', 'mani2002', 'owaspcryptofail');
     if (!$conn) {
         echo 'Connection error: ' . mysqli_connect_error();
     }
