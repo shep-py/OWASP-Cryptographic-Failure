@@ -107,14 +107,6 @@ if (isset($_POST['ok'])) {
                 </div>
             </form>
         </div>
-        <?php if (!empty($_SESSION['username'])) { ?>
-            <div>
-                <h1>Hello <?php echo $r['Password']; ?></h1>
-                <form method="POST">
-                    <button class="button-36" role="button" name="ok">OK</button>
-                </form>
-            </div>
-        <?php } ?>
     </div>
 
 </body>
