@@ -1,65 +1,122 @@
 <?php
+
 session_start();
-$error = "";
-if (isset($_POST['loginbutton'])) {
-    $Username = $_POST['uname'];
-    $Pass = $_POST['pass'];
-    extract($_POST);
-    $conn = mysqli_connect('localhost', 'mani1', 'mani2002', 'owaspcryptofail');
-    if (!$conn) {
-        echo 'Connection error: ' . mysqli_connect_error();
-    }
-    $sql = mysqli_query($conn, "SELECT * FROM  `admin` where Username='$Username' and Pass='$Pass'");
-    $row  = mysqli_fetch_array($sql);
-    if (is_array($row)) {
-        $_SESSION["uname"] = $row['Username'];
-        $_SESSION["Pass"] = $row['Pass'];
-        header("Location: dashboard.html");
-    } else {
-        $error = "Invalid Credentials";
+$sessionID = session_id();
+
+$conn = mysqli_connect('localhost', 'mani1', 'mani2002', 'owasptop10');
+
+if (!$conn) {
+    echo "Unable to establish connection to Database";
+}
+
+$username = "";
+$password = "";
+$option = array();
+
+if (isset($_POST['submit'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $option = $_POST['option'];
+}
+
+if (in_array("encode", $option)) {
+    $sql = "SELECT * FROM cryptographicfailureencoded WHERE username = '$username'";
+} else {
+    $sql = "SELECT * FROM cryptographicfailurenotencoded WHERE username = '$username'";
+}
+
+$results = mysqli_query($conn, $sql);
+
+foreach ($results as $r) {
+
+    $pwd_check = password_verify($password, $r['password']);
+
+    if ($pwd_check) {
+        $_SESSION['username'] = $r['username'];
     }
 }
+
+
+if (in_array("hijack", $option)) {
+    //Code for Hijacking
+    //Code for Hijacking
+    //Code for Hijacking
+    //Code for Hijacking
+    //Code for Hijacking
+    //Code for Hijacking
+    //Code for Hijacking
+}
+
+if (isset($_POST['ok'])) {
+    session_destroy();
+    header("Location: /");
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 
 <head>
+    <title>CYSCOM - Cryptographic Failures</title>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRMS</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script type="text/javascript">
-        function preventBack() {
-            window.history.forward();
-        }
-        setTimeout("preventBack()", 0);
-        window.onunload = function() {
-            null
-        };
-    </script>
 </head>
 
 <body>
-    <div class="loginbox">
-        <img src="cyscom.png" class="avatar">
-        <h1> CRMS</h1>
-        <form action="login.php" method="post">
-            <h1>Admin Login</h1>
-            <?php if (isset($_GET['error'])) { ?>
-                <p class="error">
-                    <?php echo $_GET['error']; ?>
-                </p>
-            <?php } ?>
-            <label for="username"><b>Username</b></label>
-            <input type="text" name="uname" placeholder="Enter Username" id="username">
-            <label for="password"><b>Password</b></label>
-            <input type="password" name="pass" placeholder="Enter Password" id="password">
-            <p style="color: #ff0033; text-align: center"><?php echo $error; ?></p>
-            <input type="submit" name="loginbutton" value="Login">
-        </form>
+    <div class="container">
+        <div class="title">Cryptographic Failure</div>
+        <div class="content">
+            <form method="POST">
+                <div class="user-details">
+                    <div class="input-box">
+                        <div class="input-box">
+                            <span class="details">Username</span>
+                            <input type="text" placeholder="Enter your username" name="username" required>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Password</span>
+                            <input type="password" placeholder="Enter your password" name="password" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="gender-details">
+                    <input type="checkbox" value="plaintext" name="option[]" id="dot-1">
+                    <input type="checkbox" value="encode" name="option[]" id="dot-2">
+                    <input type="checkbox" value="hijack" name="option[]" id="dot-3">
+                    <div class="category">
+                        <label for="dot-1">
+                            <span class="dot one"></span>
+                            <span class="plaintext">Plain Text</span>
+                        </label>
+                        <label for="dot-2">
+                            <span class="dot two"></span>
+                            <span class="encode">Encoded Format</span>
+                        </label>
+                        <label for="dot-3">
+                            <span class="dot three"></span>
+                            <span class="hijack">Hijack the Session</span>
+                        </label>
+
+                    </div>
+                </div>
+                <div class="butn">
+                    <button class="button-36" role="button" name="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+        <?php if (!empty($_SESSION['username'])) { ?>
+            <div>
+                <h1>Hello <?php echo $r['Password']; ?></h1>
+                <form method="POST">
+                    <button class="button-36" role="button" name="ok">OK</button>
+                </form>
+            </div>
+        <?php } ?>
     </div>
+
 </body>
 
 </html>
